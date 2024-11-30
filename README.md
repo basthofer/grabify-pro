@@ -1,5 +1,5 @@
 # grabify-pro
 
 
-pip install requirements.txt
-python3 app.py
+- pip install -r requirements.txt
+- python3 app.py
