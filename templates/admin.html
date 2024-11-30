@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Admin Panel</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Original URL</th>
+                    <th>Short Code</th>
+                    <th>Created</th>
+                    <th>Visits</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for url in urls %}
+                <tr>
+                    <td>{{ url.original_url }}</td>
+                    <td><a href="{{ url_for('redirect_to_url', short_code=url.short_code) }}">{{ url.short_code }}</a></td>
+                    <td>{{ url.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ url.visits|length }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#visits{{ url.id }}">
+                            Show Visits
+                        </button>
+                        <div class="collapse mt-2" id="visits{{ url.id }}">
+                            <div class="card card-body">
+                                {% for visit in url.visits %}
+                                <div class="mb-2">
+                                    <small>
+                                        <strong>Time:</strong> {{ visit.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                                        <strong>IP:</strong> {{ visit.ip_address }}<br>
+                                        <strong>Browser:</strong> {{ visit.browser }}<br>
+                                        <strong>OS:</strong> {{ visit.os }}<br>
+                                        <strong>Location:</strong> {{ visit.city }}, {{ visit.region }}, {{ visit.country }}
+                                    </small>
+                                </div>
+                                {% if not loop.last %}<hr>{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
